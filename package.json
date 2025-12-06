@@ -6,5 +6,8 @@
     "dev:api": "pnpm -F node-api dev",
     "dev:front": "pnpm -F front dev",
     "prisma:generate": "pnpm -F node-api prisma generate"
+  },
+  "dependencies": {
+    "eslint": "^9.39.1"
   }
 }
