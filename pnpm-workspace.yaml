@@ -1,0 +1,4 @@
+packages:
+- 'front'
+- 'node-api'
+- 'prisma'
