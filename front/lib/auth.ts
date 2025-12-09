@@ -61,12 +61,15 @@ export const {
   callbacks: {
     jwt: async ({ token, user }) => {
       console.log("jwt callback", { token, user })
-      return { ...token, ...user, accessToken: user?.accessToken ?? "" }
+      if (user) {
+        return { ...token, ...user, accessToken: user.accessToken }
+      }
+      return token
     },
     session: async ({ session, token }) => {
       console.log("session callback", { session, token })
       return { ...session, user: { ...session.user, ...token, accessToken: token.accessToken } }
     },
   },
-  secret: process.env.JWT_SECRET || "your_secret_key", // Optional, specify a JWT secret
+  secret: process.env.JWT_SECRET || "secret_key",
 })

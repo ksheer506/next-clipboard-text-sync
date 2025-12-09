@@ -1,3 +1,5 @@
+import { JWT } from "next-auth/jwt"
+
 interface UserData {
   id: string
   email: string
@@ -12,12 +14,13 @@ export declare module "next-auth" {
   }
 
   interface Session {
-    user?: UserData
+    user?: JWT
     accessToken: string
   }
 }
-export declare module "@auth/core/jwt" {
-  interface DefaultJWT extends UserData {
+
+declare module "next-auth/jwt" {
+  interface JWT extends UserData {
     accessToken: string
   }
 }
