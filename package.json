@@ -2,16 +2,20 @@
   "name": "next-clipboard-text-sync",
   "private": true,
   "scripts": {
-    "dev": "pnpm -F node-api dev & pnpm -F front dev",
-    "dev:api": "pnpm -F node-api dev",
-    "dev:front": "pnpm -F front dev",
-    "prisma:generate": "pnpm -F node-api prisma generate"
+    "dev": "pnpm -F next-clipboard-text-sync-node-api dev & pnpm -F next-clipboard-text-sync-front dev",
+    "dev:api": "pnpm -F next-clipboard-text-sync-node-api dev",
+    "dev:front": "pnpm -F next-clipboard-text-sync-front dev",
+    "prisma:generate": "pnpm -F next-clipboard-text-sync-node-api prisma generate"
   },
   "dependencies": {
     "eslint": "^9.39.1",
     "jsonwebtoken": "^9.0.3"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.10"
+    "@next/eslint-plugin-next": "^15.5.7",
+    "@stylistic/eslint-plugin": "^2.13.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "eslint-plugin-react": "^7.37.5",
+    "typescript-eslint": "^8.48.1"
   }
 }
