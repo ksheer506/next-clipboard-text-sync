@@ -1,4 +1,4 @@
-import { getSession } from "@/server-actions/auth";
+import { getSession, signOutWithForm } from "@/server-actions/auth";
 import Link from "next/link";
 
 export default async function Header() {
@@ -7,9 +7,15 @@ export default async function Header() {
   return (
     <header>
       {session?.user ? (
-        <p>
-          {`${session.user.firstName} ${session.user.lastName}`}
-        </p>
+        <>
+          <p>
+            {`${session.user.firstName} ${session.user.lastName}`}
+          </p>
+          <form action={signOutWithForm}>
+            <button type="submit">로그아웃</button>
+          </form>
+        </>
+
       ) : (
         <>
           <Link href="/auth/signin">로그인</Link>

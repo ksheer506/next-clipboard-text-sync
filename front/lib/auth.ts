@@ -37,7 +37,6 @@ export const {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        console.log({ credentials })
         if (!credentials?.email || !credentials?.password) {
           throw new Error("Email and password are required.")
         }
@@ -60,16 +59,14 @@ export const {
   ],
   callbacks: {
     jwt: async ({ token, user }) => {
-      console.log("jwt callback", { token, user })
       if (user) {
         return { ...token, ...user, accessToken: user.accessToken }
       }
       return token
     },
     session: async ({ session, token }) => {
-      console.log("session callback", { session, token })
       return { ...session, user: { ...session.user, ...token, accessToken: token.accessToken } }
     },
   },
-  secret: process.env.JWT_SECRET || "secret_key",
+  secret: process.env.NEXTAUTH_SECRET || "",
 })

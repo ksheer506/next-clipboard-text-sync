@@ -7,7 +7,9 @@ export const signInWithCredentials = async (form: FormData) => signIn("credentia
   redirectTo: "/",
 })
 
-export const signOutWithForm = signOut
+export const signOutWithForm = async () => {
+  await signOut({ redirectTo: "/" })
+}
 
 export const getSession = auth
 
