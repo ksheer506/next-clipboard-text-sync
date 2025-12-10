@@ -12,6 +12,9 @@
         "./*"
       ]
     },
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es2023",
     "allowJs": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,

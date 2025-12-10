@@ -1,4 +1,6 @@
 packages:
-- 'front'
-- 'node-api'
-- 'prisma'
+  - front
+  - node-api
+
+onlyBuiltDependencies:
+  - better-sqlite3
