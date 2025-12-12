@@ -1,0 +1,1 @@
+export const createServiceErrorCode = (category: string, code: number) => `APP_${category.toUpperCase()}_${code.toString().padStart(4, "0")}`
