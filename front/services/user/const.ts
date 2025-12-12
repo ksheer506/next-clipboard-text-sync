@@ -1,0 +1,1 @@
+export const REFRESH_TOKEN_EXPIRATION_DAY = 30
