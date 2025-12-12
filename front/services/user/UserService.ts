@@ -1,9 +1,11 @@
+import "server-only";
 import bcrypt from "bcrypt";
 import { prisma } from "@/lib/prisma";
+
 import ServiceError from "@/services/@common/ServiceError";
 import { USER_ERROR } from "@/services/@common/errorCodes";
 import { SignUpRequest, SignInRequest } from "@/services/user/request";
-import { signAccessToken, signRefreshToken } from "@/services/user/utils";
+import { sha256, signAccessToken, signRefreshToken } from "@/services/user/utils";
 import { handleService } from "@/services/@common/utils";
 import { REFRESH_TOKEN_EXPIRATION_DAY } from "@/services/user/const";
 
@@ -44,7 +46,7 @@ class UserService {
 
         await prisma.refreshToken.create({
           data: {
-            token: refreshToken,
+            token: sha256(refreshToken),
             userId: user.id,
             createdAt: new Date(),
             expiredAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * REFRESH_TOKEN_EXPIRATION_DAY)
@@ -60,7 +62,7 @@ class UserService {
   async signOut(refreshToken: string) {
     return handleService({
       fn: async () => {
-        const { count } = await prisma.refreshToken.deleteMany({ where: { token: refreshToken } })
+        const { count } = await prisma.refreshToken.deleteMany({ where: { token: sha256(refreshToken) } })
 
         /* 해당 토큰이 없거나 정상적으로 삭제된 경우 */
         if (count >= 0) {
