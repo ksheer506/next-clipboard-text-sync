@@ -1,8 +1,7 @@
-export interface SignUpRequest {
-  email: string;
-  password: string;
-  name: string;
-}
+import { SignUpSchema } from "@/services/user/schema";
+import z from "zod";
+
+export type SignUpRequest = z.infer<typeof SignUpSchema>;
 
 export interface SignInRequest {
   email: string;
