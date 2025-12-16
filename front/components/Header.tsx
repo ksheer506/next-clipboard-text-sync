@@ -8,9 +8,7 @@ export default async function Header() {
     <header>
       {session?.user ? (
         <>
-          <p>
-            {`${session.user.firstName} ${session.user.lastName}`}
-          </p>
+          <p>{session.user.name}</p>
           <form action={signOutWithForm}>
             <button type="submit">로그아웃</button>
           </form>

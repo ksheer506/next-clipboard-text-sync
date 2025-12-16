@@ -1,15 +1,22 @@
 "use server"
 import { auth, signIn, signOut, update } from "@/lib/auth"
 import ServiceError from "@/services/@common/ServiceError"
+import { SignUpSchema } from "@/services/user/schema"
 import UserService from "@/services/user/UserService"
 
 export const signUp = async (form: FormData) => {
   const email = (form.get("email") || "") as string
-  const password = (form.get("password") || "") as string
   const name = (form.get("name") || "") as string
+  const password = (form.get("password") || "") as string
+  const passwordConfirm = (form.get("password-confirm") || "") as string
 
   try {
-    await new UserService().signUp({ email, password, name })
+    const result = SignUpSchema.safeParse({ email, password, passwordConfirm, name })
+
+    if (!result.success) {
+      return { ok: false, message: result.error.issues[0].message }
+    }
+    await new UserService().signUp(result.data)
     return { ok: true }
   } catch (e) {
     if (ServiceError.isError(e)) {

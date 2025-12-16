@@ -1,24 +1,6 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
-
-const DUMMY_USER_DATA = [
-  {
-    id: "1",
-    email: "a@a.a",
-    firstName: "John",
-    lastName: "Doe",
-    phone: "1234567890",
-  },
-  {
-    id: "2",
-    email: "sXK3o2@example.com",
-    firstName: "Jane",
-    lastName: "Doe",
-    phone: "9876543210",
-  }
-] as const
-
-const ACCESS_TOKEN = "access_token"
+import UserService from "@/services/user/UserService";
 
 export const {
   handlers,
@@ -40,20 +22,16 @@ export const {
         if (!credentials?.email || !credentials?.password) {
           throw new Error("Email and password are required.")
         }
-        const user = DUMMY_USER_DATA.find((user) => user.email === credentials.email)
-        /* const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
-        }) */
+        /** TODO:ksh: ServiceError 처리 - 2025.12.16 */
+        const res = await new UserService().signIn({
+          email: credentials.email as string,
+          password: credentials.password as string
+        })
 
-        if (!user) {
+        if (!res) {
           throw new Error("Invalid email or password.")
         }
-        /* const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
-
-        if (!isPasswordValid) {
-          throw new Error("Invalid email or password.")
-        } */
-        return { ...user, accessToken: ACCESS_TOKEN }
+        return { ...res.user, id: res.user.id.toString(), accessToken: res.accessToken, refreshToken: res.refreshToken }
       },
     }),
   ],

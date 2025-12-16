@@ -18,8 +18,9 @@ class UserService {
         if (isExist) {
           throw new ServiceError(USER_ERROR.EMAIL_ALREADY_REGISTERED)
         }
+        const { passwordConfirm, ...rest } = request
         const hashed = await bcrypt.hash(request.password, 10)
-        const { password, ...user } = await prisma.user.create({ data: { ...request, password: hashed } })
+        const { password, ...user } = await prisma.user.create({ data: { ...rest, password: hashed } })
 
         return user
       },
