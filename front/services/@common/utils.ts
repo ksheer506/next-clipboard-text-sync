@@ -2,7 +2,10 @@ import { INTERNAL_ERROR } from "@/services/@common/errorCodes"
 import ServiceError from "@/services/@common/ServiceError"
 import { ServiceHandlerOptions } from "@/services/@common/types"
 
-export const createServiceErrorCode = (category: string, code: number) => `APP_${category.toUpperCase()}_${code.toString().padStart(4, "0")}`
+export const createServiceError = (category: string, code: number, message: string) => ({
+  code: `APP_${category.toUpperCase()}_${code.toString().padStart(4, "0")}`,
+  message: message,
+})
 
 export const handleService = async <T>({ fn, unknownErrorMessage }: ServiceHandlerOptions<T>) => {
   try {
@@ -12,6 +15,9 @@ export const handleService = async <T>({ fn, unknownErrorMessage }: ServiceHandl
       throw e
     }
     console.error(e)
-    throw new ServiceError(INTERNAL_ERROR.UNKNOWN, unknownErrorMessage || "알 수 없는 오류가 발생했습니다. 다시 시도해주세요.")
+    throw new ServiceError({
+      ...INTERNAL_ERROR.UNKNOWN,
+      message: unknownErrorMessage || INTERNAL_ERROR.UNKNOWN.message
+    })
   }
 }

@@ -16,7 +16,7 @@ class UserService {
         const isExist = await prisma.user.findUnique({ where: { email: request.email } })
 
         if (isExist) {
-          throw new ServiceError(USER_ERROR.EMAIL_ALREADY_REGISTERED, "이미 사용 중인 이메일입니다.")
+          throw new ServiceError(USER_ERROR.EMAIL_ALREADY_REGISTERED)
         }
         const hashed = await bcrypt.hash(request.password, 10)
         const { password, ...user } = await prisma.user.create({ data: { ...request, password: hashed } })
@@ -33,12 +33,12 @@ class UserService {
         const user = await prisma.user.findUnique({ where: { email: request.email } })
 
         if (!user) {
-          throw new ServiceError(USER_ERROR.USER_NOT_FOUND, "가입된 이메일이 없습니다.")
+          throw new ServiceError(USER_ERROR.USER_NOT_FOUND)
         }
         const isPasswordValid = await bcrypt.compare(request.password, user.password)
 
         if (!isPasswordValid) {
-          throw new ServiceError(USER_ERROR.INVALID_PASSWORD, "비밀번호가 일치하지 않습니다.")
+          throw new ServiceError(USER_ERROR.INVALID_PASSWORD)
         }
         const payload = { id: user.id, email: user.email, name: user.name }
         const accessToken = signAccessToken(payload)
