@@ -1,3 +1,4 @@
+import { ROUTE } from "@/const/route";
 import { getSession, signOutWithForm } from "@/server-actions/auth";
 import Link from "next/link";
 
@@ -16,8 +17,8 @@ export default async function Header() {
 
       ) : (
         <>
-          <Link href="/auth/signin">로그인</Link>
-          <Link href="/auth/signup">회원가입</Link>
+          <Link href={ROUTE.AUTH.SIGN_IN}>로그인</Link>
+          <Link href={ROUTE.AUTH.SIGN_UP}>회원가입</Link>
         </>
       )}
     </header>
