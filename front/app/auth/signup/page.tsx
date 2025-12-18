@@ -2,7 +2,7 @@
 
 import { ROUTE } from "@/const/route";
 import { signUp } from "@/server-actions/auth";
-import { SignUpSchema } from "@/services/user/schema";
+import { SignUpSchema } from "@/services/auth/schema";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 

@@ -1,6 +1,6 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
-import UserService from "@/services/user/UserService";
+import AuthService from "@/services/auth/AuthService";
 
 export const {
   handlers,
@@ -23,7 +23,7 @@ export const {
           throw new Error("Email and password are required.")
         }
         /** TODO:ksh: ServiceError 처리 - 2025.12.16 */
-        const res = await new UserService().signIn({
+        const res = await new AuthService().signIn({
           email: credentials.email as string,
           password: credentials.password as string
         })

@@ -4,12 +4,12 @@ import { prisma } from "@/lib/prisma";
 
 import ServiceError from "@/services/@common/ServiceError";
 import { USER_ERROR } from "@/services/@common/errorCodes";
-import { SignUpRequest, SignInRequest } from "@/services/user/request";
-import { sha256, signAccessToken, signRefreshToken } from "@/services/user/utils";
+import { SignUpRequest, SignInRequest } from "@/services/auth/request";
+import { sha256, signAccessToken, signRefreshToken } from "@/services/auth/utils";
 import { handleService } from "@/services/@common/utils";
-import { REFRESH_TOKEN_EXPIRATION_DAY } from "@/services/user/const";
+import { REFRESH_TOKEN_EXPIRATION_DAY } from "@/services/auth/const";
 
-class UserService {
+class AuthService {
   async signUp(request: SignUpRequest) {
     return handleService({
       fn: async () => {
@@ -76,4 +76,4 @@ class UserService {
   }
 }
 
-export default UserService
+export default AuthService

@@ -1,8 +1,8 @@
 "use server"
 import { auth, signIn, signOut, update } from "@/lib/auth"
 import ServiceError from "@/services/@common/ServiceError"
-import { SignUpSchema } from "@/services/user/schema"
-import UserService from "@/services/user/UserService"
+import { SignUpSchema } from "@/services/auth/schema"
+import AuthService from "@/services/auth/AuthService"
 
 export const signUp = async (form: FormData) => {
   const email = (form.get("email") || "") as string
@@ -16,7 +16,7 @@ export const signUp = async (form: FormData) => {
     if (!result.success) {
       return { ok: false, message: result.error.issues[0].message }
     }
-    await new UserService().signUp(result.data)
+    await new AuthService().signUp(result.data)
     return { ok: true }
   } catch (e) {
     if (ServiceError.isError(e)) {

@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
-import { TokenPayload } from "@/services/user/request";
-import { REFRESH_TOKEN_EXPIRATION_DAY } from "@/services/user/const";
+import { TokenPayload } from "@/services/auth/request";
+import { REFRESH_TOKEN_EXPIRATION_DAY } from "@/services/auth/const";
 
 const ACCESS_SECRET = process.env.ACCESS_TOKEN_SECRET || ""
 const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET || ""
