@@ -15,7 +15,7 @@ const Landing = () => {
           <h1 className="text-3xl font-bold my-4">ShareHub</h1>
           <p className="text-muted-foreground">텍스트와 파일을 편리하게 공유하세요.</p>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3 my-3">
           <div className="flex items-center gap-3 text-sm">
             <FileText className="w-5 h-5 text-primary" />
             <span>텍스트 공유 및 저장</span>
