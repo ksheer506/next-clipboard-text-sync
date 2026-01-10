@@ -1,40 +1,33 @@
 import Card from "@/components/Card";
+import TextField from "@/components/Form/TextField";
 import { ROUTE } from "@/const/route";
 import { signInWithCredentials } from "@/server-actions/auth";
-import { Button, TextField } from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
 import { CircleX } from "lucide-react";
 import Link from "next/link";
 
 export default function SignIn() {
+  /* TODO:ksh: SignInActionForm으로 분리하기 */
+  /* TODO:ksh: 에러 상태 처리 */
   return (
     <div className="min-h-screen flex items-center justify-center">
       <Card>
         <form action={signInWithCredentials} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="font-bold">이메일(ID)</label>
-            <TextField.Root
-              className="w-full"
-              type="email"
-              name="email"
-              id="email"
-              defaultValue="ksheer506@naver.com"
-              placeholder="이메일(ID)를 입력해주세요."
-            />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password" className="font-bold">비밀번호</label>
-            <TextField.Root
-              className="w-full"
-              type="password"
-              name="password"
-              id="password"
-              placeholder="비밀번호를 입력해주세요."
-            >
-              {/* <TextField.Slot side="right">
-                <CircleX />
-              </TextField.Slot> */}
-            </TextField.Root>
-          </div>
+          <TextField
+            title="이메일(ID)"
+            type="email"
+            id="email"
+            name="email"
+            defaultValue="ksheer506@naver.com"
+            placeholder="이메일(ID)를 입력해주세요."
+          />
+          <TextField
+            title="비밀번호"
+            type="password"
+            id="password"
+            name="password"
+            placeholder="비밀번호를 입력해주세요."
+          />
           <Button size="3" type="submit" className="w-full">로그인</Button>
         </form>
         <div className="relative flex justify-center h-px bg-border my-2">
