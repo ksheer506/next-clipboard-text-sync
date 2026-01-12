@@ -10,7 +10,6 @@ interface TextFieldProps extends ComponentProps<typeof RadixTextField.Root> {
 }
 
 const TextField = ({ title, error, id, LeftSlot, RightSlot, ...props }: TextFieldProps) => {
-
   return (
     <div className="flex flex-col gap-1">
       <label htmlFor={id} className="font-bold">{title}</label>

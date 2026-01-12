@@ -32,9 +32,9 @@ export const signUp = async (state: unknown, form: FormData) => {
       throw e
     }
     if (ServiceError.isError(e)) {
-      return { ok: false, field: null, message: e.message }
+      return { ok: false, message: e.message }
     }
-    return { ok: false, field: null, message: "회원가입에 실패하였습니다. 다시 시도해주세요." }
+    return { ok: false, message: "회원가입에 실패하였습니다. 다시 시도해주세요." }
   }
 
 }
