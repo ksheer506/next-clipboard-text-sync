@@ -3,27 +3,40 @@ import { auth, signIn, signOut, update } from "@/lib/auth"
 import ServiceError from "@/services/@common/ServiceError"
 import { SignUpSchema } from "@/services/auth/schema"
 import AuthService from "@/services/auth/AuthService"
+import { redirect } from "next/navigation"
+import { ROUTE } from "@/const/route"
+import { isRedirectError, RedirectType } from "next/dist/client/components/redirect-error"
 
-export const signUp = async (form: FormData) => {
-  const email = (form.get("email") || "") as string
-  const name = (form.get("name") || "") as string
-  const password = (form.get("password") || "") as string
-  const passwordConfirm = (form.get("password-confirm") || "") as string
+export const signUp = async (state: unknown, form: FormData) => {
+  const data = {
+    email: form.get("email") || "",
+    name: form.get("name") || "",
+    password: form.get("password") || "",
+    passwordConfirm: form.get("password-confirm") || "",
+  }
 
   try {
-    const result = SignUpSchema.safeParse({ email, password, passwordConfirm, name })
+    const result = SignUpSchema.safeParse(data)
 
     if (!result.success) {
-      return { ok: false, message: result.error.issues[0].message }
+      return {
+        ok: false,
+        field: result.error.issues[0].path[0] as string,
+        message: result.error.issues[0].message,
+      }
     }
     await new AuthService().signUp(result.data)
-    return { ok: true }
+    redirect(ROUTE.AUTH.SIGN_IN, RedirectType.replace)
   } catch (e) {
-    if (ServiceError.isError(e)) {
-      return { ok: false, message: e.message }
+    if (isRedirectError(e)) {
+      throw e
     }
-    return { ok: false, message: "회원가입에 실패하였습니다. 다시 시도해주세요." }
+    if (ServiceError.isError(e)) {
+      return { ok: false, field: null, message: e.message }
+    }
+    return { ok: false, field: null, message: "회원가입에 실패하였습니다. 다시 시도해주세요." }
   }
+
 }
 
 export const signInWithCredentials = async (form: FormData) => signIn("credentials", {

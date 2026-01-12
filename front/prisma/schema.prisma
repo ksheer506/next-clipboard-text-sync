@@ -16,18 +16,56 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  email String @unique
-  name String
-  password String
-  refreshToken RefreshToken[]
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  name          String
+  password      String
+  refreshToken  RefreshToken[]
+  sharableItems SharableItem[]
+  devices       Device[]
 }
 
 model RefreshToken {
-  id Int @id @default(autoincrement())
-  token String @unique
-  userId Int 
-  user User @relation(fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
   createdAt DateTime @default(now())
   expiredAt DateTime
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model SharableItem {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  deviceId  String
+  type      String
+  content   String?
+  fileUrl   String?
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  isDeleted Boolean
+
+  user   User   @relation(fields: [userId], references: [id])
+  device Device @relation(fields: [deviceId], references: [id])
+
+  @@index([userId, createdAt])
+  @@index([userId, isDeleted])
+  @@index([expiresAt])
+}
+
+enum DeviceType {
+  PC
+  MOBILE
+}
+
+model Device {
+  id            String         @id @default(cuid())
+  userId        Int
+  name          String?
+  createdAt     DateTime       @default(now())
+  type          DeviceType
+  sharableItems SharableItem[]
+
+  user User @relation(fields: [userId], references: [id])
 }
