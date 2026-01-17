@@ -11,4 +11,5 @@ export const USER_ERROR = {
   /* 로그인 */
   USER_NOT_FOUND: createServiceError("USER", 2, "해당 이메일로 가입된 사용자가 없습니다."),
   INVALID_PASSWORD: createServiceError("USER", 3, "비밀번호가 일치하지 않습니다."),
+  EMPTY_EMAIL_OR_PASSWORD: createServiceError("USER", 4, "이메일 또는 비밀번호가 입력되지 않았습니다."),
 } as const;

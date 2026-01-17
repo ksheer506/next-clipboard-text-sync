@@ -32,6 +32,9 @@ class AuthService {
   async signIn(request: SignInRequest) {
     return handleService({
       fn: async () => {
+        if (!request.email || !request.password) {
+          throw new ServiceError(USER_ERROR.EMPTY_EMAIL_OR_PASSWORD)
+        }
         const user = await prisma.user.findUnique({ where: { email: request.email } })
 
         if (!user) {

@@ -27,3 +27,8 @@ export const SignUpSchema = z.object({
     return ctx.addIssue("비밀번호 확인이 일치하지 않습니다.")
   }
 })
+
+export const SignInSchema = z.object({
+  email: z.string().nonempty({ error: "이메일을 입력해주세요." }),
+  password: z.string().nonempty({ error: "비밀번호를 입력해주세요." }),
+})
