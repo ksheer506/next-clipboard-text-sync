@@ -1,11 +1,12 @@
 "use server"
 import { auth, signIn, signOut, update } from "@/lib/auth"
 import ServiceError from "@/services/@common/ServiceError"
-import { SignUpSchema } from "@/services/auth/schema"
+import { SignInSchema, SignUpSchema } from "@/services/auth/schema"
 import AuthService from "@/services/auth/AuthService"
 import { redirect } from "next/navigation"
 import { ROUTE } from "@/const/route"
 import { isRedirectError, RedirectType } from "next/dist/client/components/redirect-error"
+import { AuthError } from "next-auth"
 
 export const signUp = async (state: unknown, form: FormData) => {
   const data = {
@@ -39,11 +40,37 @@ export const signUp = async (state: unknown, form: FormData) => {
 
 }
 
-export const signInWithCredentials = async (form: FormData) => signIn("credentials", {
-  email: form.get("email") || "",
-  password: form.get("password") || "",
-  redirectTo: "/",
-})
+export const signInWithCredentials = async (state: unknown, form: FormData) => {
+  const data = {
+    email: form.get("email") || "",
+    password: form.get("password") || "",
+  }
+
+  try {
+    const result = SignInSchema.safeParse(data)
+
+    if (!result.success) {
+      return {
+        ok: false,
+        field: result.error.issues[0].path[0] as string,
+        message: result.error.issues[0].message,
+      }
+    }
+    await signIn("credentials", { ...data, redirectTo: "/" })
+  } catch (e) {
+    if (isRedirectError(e)) {
+      throw e
+    }
+    if (!(e instanceof AuthError)) {
+      return { ok: false, message: "로그인에 실패하였습니다. 다시 시도해주세요." }
+    }
+    const thrown = e.cause?.err
+
+    if (ServiceError.isError(thrown)) {
+      return { ok: false, message: thrown.message }
+    }
+  }
+}
 
 export const signOutWithForm = async () => {
   await signOut({ redirectTo: "/" })

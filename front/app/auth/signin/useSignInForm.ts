@@ -1,13 +1,11 @@
 import { FormActionError } from "@/@types/common"
 import { ChangeEvent, useEffect, useState } from "react"
 
-export const useSignUpForm = (actionError: FormActionError | null = null) => {
+export const useSignInForm = (actionError: FormActionError | null) => {
   const [error, setError] = useState<FormActionError>(actionError ?? INITIAL_ERROR)
   const [form, setForm] = useState({
     email: "",
-    name: "",
     password: "",
-    passwordConfirm: "",
   })
 
   const handleChangeValue = (field: keyof typeof form) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,17 +22,9 @@ export const useSignUpForm = (actionError: FormActionError | null = null) => {
       value: form.email,
       onChange: handleChangeValue("email"),
     },
-    name: {
-      value: form.name,
-      onChange: handleChangeValue("name"),
-    },
     password: {
       value: form.password,
       onChange: handleChangeValue("password"),
-    },
-    passwordConfirm: {
-      value: form.passwordConfirm,
-      onChange: handleChangeValue("passwordConfirm"),
     },
   }
 

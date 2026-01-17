@@ -1,6 +1,6 @@
 import Landing from "@/components/Landing";
 import { ROUTE } from "@/const/route";
-import { getSession } from "@/server-actions/auth";
+import { getSession, signOutWithForm } from "@/server-actions/auth";
 import Link from "next/link";
 
 export default async function Home() {
@@ -14,6 +14,9 @@ export default async function Home() {
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <Link href={ROUTE.AUTH.SIGN_IN}>Login</Link>
       </main>
+      <form action={signOutWithForm}>
+        <button type="submit">Logout</button>
+      </form>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
         footer
       </footer>

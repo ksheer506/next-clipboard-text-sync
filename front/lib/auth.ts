@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
 import AuthService from "@/services/auth/AuthService";
+import ServiceError from "@/services/@common/ServiceError";
 
 export const {
   handlers,
@@ -19,20 +20,21 @@ export const {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Email and password are required.")
-        }
-        /** TODO:ksh: ServiceError 처리 - 2025.12.16 */
-        const res = await new AuthService().signIn({
-          email: credentials.email as string,
-          password: credentials.password as string
-        })
+        try {
+          const res = await new AuthService().signIn({
+            email: credentials.email as string,
+            password: credentials.password as string
+          })
 
-        if (!res) {
-          throw new Error("Invalid email or password.")
+          return { ...res.user, id: res.user.id.toString(), accessToken: res.accessToken, refreshToken: res.refreshToken }
         }
-        return { ...res.user, id: res.user.id.toString(), accessToken: res.accessToken, refreshToken: res.refreshToken }
-      },
+        catch (e) {
+          if (ServiceError.isError(e)) {
+            throw e
+          }
+          throw new Error("Login failed. Please try again.")
+        }
+      }
     }),
   ],
   callbacks: {
