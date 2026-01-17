@@ -61,14 +61,10 @@ export const signInWithCredentials = async (state: unknown, form: FormData) => {
     if (isRedirectError(e)) {
       throw e
     }
-    if (!(e instanceof AuthError)) {
-      return { ok: false, message: "로그인에 실패하였습니다. 다시 시도해주세요." }
+    if (e instanceof AuthError && ServiceError.isError(e.cause?.err)) {
+      return { ok: false, message: e.cause.err.message }
     }
-    const thrown = e.cause?.err
-
-    if (ServiceError.isError(thrown)) {
-      return { ok: false, message: thrown.message }
-    }
+    return { ok: false, message: "로그인에 실패하였습니다. 다시 시도해주세요." }
   }
 }
 

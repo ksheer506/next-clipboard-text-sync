@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { Theme } from "@radix-ui/themes";
+import MainDrawer from "@/components/MainDrawer/MainDrawer";
 
 import "./globals.css";
 
@@ -29,7 +30,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SessionProvider>
-          <Theme accentColor="cyan">
+          <Theme accentColor="cyan" className="flex">
+            <MainDrawer />
             <main className="w-screen h-screen geometric-bg">
               {children}
             </main>
