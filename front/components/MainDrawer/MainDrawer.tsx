@@ -6,19 +6,14 @@ import { LogOut } from "lucide-react";
 import { Button } from "@radix-ui/themes";
 import MenuLink from "@/components/MainDrawer/MenuLink";
 import { ROUTE } from "@/const/route";
-import { useSession } from "next-auth/react";
 
 const MIN_WIDTH = "55px"
 const MAX_WIDTH = "250px"
 
 const MainDrawer = () => {
-  const { data: session } = useSession();
   const [isExpanded, setIsExpanded] = useState(false);
   const container = useRef<HTMLDivElement>(null);
 
-  if (!session) {
-    return null;
-  }
   return (
     <div
       style={{ width: isExpanded ? MAX_WIDTH : MIN_WIDTH }}

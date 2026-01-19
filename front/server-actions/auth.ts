@@ -66,9 +66,12 @@ export const signInWithCredentials = async (state: unknown, form: FormData) => {
     }
     return { ok: false, message: "로그인에 실패하였습니다. 다시 시도해주세요." }
   }
-}
+};
 
-export const signOutWithForm = async () => {
+export const signOutWithForm = async (refreshToken?: string) => {
+  if (refreshToken) {
+    new AuthService().signOut(refreshToken);
+  }
   await signOut({ redirectTo: "/" })
 }
 
