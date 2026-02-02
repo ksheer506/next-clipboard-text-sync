@@ -1,7 +1,9 @@
+import { ShareAuthority } from "@/generated/prisma/enums"
 import { JWT } from "next-auth/jwt"
 
 interface UserData {
   id: string
+  authority: ShareAuthority
   email: string
   name: string
 }

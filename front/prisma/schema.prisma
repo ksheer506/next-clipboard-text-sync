@@ -15,11 +15,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ShareAuthority {
+  ADMIN
+  TEXT_ONLY
+}
+
 model User {
   id            Int            @id @default(autoincrement())
   email         String         @unique
   name          String
   password      String
+  authority     ShareAuthority  @default(TEXT_ONLY)
   refreshToken  RefreshToken[]
   sharableItems SharableItem[]
   devices       Device[]

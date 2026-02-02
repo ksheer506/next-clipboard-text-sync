@@ -45,7 +45,12 @@ class AuthService {
         if (!isPasswordValid) {
           throw new ServiceError(USER_ERROR.INVALID_PASSWORD)
         }
-        const payload = { id: user.id, email: user.email, name: user.name }
+        const payload = {
+          id: user.id,
+          authority: user.authority,
+          email: user.email,
+          name: user.name
+        }
         const accessToken = signAccessToken(payload)
         const refreshToken = signRefreshToken(payload)
 
