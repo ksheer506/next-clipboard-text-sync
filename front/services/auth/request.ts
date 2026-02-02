@@ -9,6 +9,6 @@ export interface SignInRequest {
 }
 
 export interface TokenPayload {
-  id: number
+  userId: number
   email: string
 }

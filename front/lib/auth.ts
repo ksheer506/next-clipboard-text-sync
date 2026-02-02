@@ -26,7 +26,7 @@ export const {
             password: credentials.password as string
           })
 
-          return { ...res.user, id: res.user.id.toString(), accessToken: res.accessToken, refreshToken: res.refreshToken }
+          return { ...res.user, userId: res.user.userId, accessToken: res.accessToken, refreshToken: res.refreshToken }
         }
         catch (e) {
           if (ServiceError.isError(e)) {
@@ -50,3 +50,12 @@ export const {
   },
   secret: process.env.NEXTAUTH_SECRET || "",
 })
+
+export const getAuthenticatedUser = async () => {
+  const session = await auth()
+
+  if (!session?.user?.id) {
+    return null
+  }
+  return { id: session.user.userId, authority: session.user.authority }
+}

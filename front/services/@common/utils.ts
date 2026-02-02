@@ -2,8 +2,8 @@ import { INTERNAL_ERROR } from "@/services/@common/errorCodes"
 import ServiceError from "@/services/@common/ServiceError"
 import { ServiceHandlerOptions } from "@/services/@common/types"
 
-export const createServiceError = (category: string, code: number, message: string) => ({
-  code: `APP_${category.toUpperCase()}_${code.toString().padStart(4, "0")}`,
+export const createServiceError = (domain: string, code: number, message: string) => ({
+  code: `ERROR: ${domain.toUpperCase()}_${code.toString().padStart(4, "0")}`,
   message: message,
 })
 

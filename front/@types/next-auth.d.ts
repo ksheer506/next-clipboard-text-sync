@@ -3,6 +3,7 @@ import { JWT } from "next-auth/jwt"
 
 interface UserData {
   id: string
+  userId: number
   authority: ShareAuthority
   email: string
   name: string

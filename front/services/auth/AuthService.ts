@@ -46,7 +46,7 @@ class AuthService {
           throw new ServiceError(USER_ERROR.INVALID_PASSWORD)
         }
         const payload = {
-          id: user.id,
+          userId: user.id,
           authority: user.authority,
           email: user.email,
           name: user.name
