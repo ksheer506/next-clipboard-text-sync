@@ -1,0 +1,1 @@
+export const getExpireDate = (expireTime: number) => new Date(Date.now() + expireTime)
