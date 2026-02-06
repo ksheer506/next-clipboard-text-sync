@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import AuthService from "@/services/auth/AuthService";
 import ServiceError from "@/services/@common/ServiceError";
 import { getUserDeviceInfo } from "@/lib/device";
+import DeviceService from "@/services/device/DeviceService";
 
 export const {
   handlers,
@@ -25,8 +26,8 @@ export const {
           const res = await new AuthService().signIn({
             email: credentials.email as string,
             password: credentials.password as string,
-            device: getUserDeviceInfo()
           })
+          const device = await new DeviceService().registerOrTouch(res.user.userId, getUserDeviceInfo())
 
           return { ...res.user, userId: res.user.userId, accessToken: res.accessToken, refreshToken: res.refreshToken }
         }
