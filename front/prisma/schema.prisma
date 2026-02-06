@@ -41,11 +41,16 @@ model RefreshToken {
   user User @relation(fields: [userId], references: [id])
 }
 
+enum ShareItemType {
+  TEXT
+  FILE
+}
+
 model SharableItem {
   id        Int      @id @default(autoincrement())
   userId    Int
   deviceId  String
-  type      String
+  type      ShareItemType
   content   String?
   fileUrl   String?
   createdAt DateTime @default(now())
@@ -67,8 +72,10 @@ enum DeviceType {
 
 model Device {
   id            String         @id @default(cuid())
+  deviceId      String /* 클라이언트 식별용 id */
   userId        Int
   name          String?
+  lastSeenAt    DateTime
   createdAt     DateTime       @default(now())
   type          DeviceType
   sharableItems SharableItem[]
