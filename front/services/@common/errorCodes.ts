@@ -20,3 +20,7 @@ export const USER_ERROR = {
   NO_AUTHORITY: createServiceError("USER", 6, "권한이 없습니다."),
   NO_FILE_AUTHORITY: createServiceError("USER", 7, "파일 공유 권한이 없습니다."),
 } as const;
+
+export const DEVICE_ERROR = {
+  DEVICE_NOT_FOUND: createServiceError("DEVICE", 1, "등록되지 않는 디바이스입니다."),
+}

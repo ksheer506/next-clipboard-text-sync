@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import UAParser from "ua-parser-js";
+import { UAParser } from "ua-parser-js";
 import { DeviceType } from "@/generated/prisma/enums";
 
 const DEVICE_ID_KEY = "SHARE_DEVICE_ID";
@@ -15,6 +15,19 @@ export const getDeviceId = () => {
   return deviceId
 }
 
-export const getDeviceType = () => {
-  return /Mobi|Android/i.test(navigator.userAgent) ? DeviceType.MOBILE : DeviceType.PC
+const getDeviceFromUA = () => {
+  const parser = new UAParser();
+  const device = parser.getDevice();
+  const browser = parser.getBrowser();
+
+  return {
+    type: device.type === "mobile" ? DeviceType.MOBILE : DeviceType.PC,
+    name: ""
+  }
+
 }
+
+export const getUserDeviceInfo = () => ({
+  id: getDeviceId(),
+  ...getDeviceFromUA(),
+})
