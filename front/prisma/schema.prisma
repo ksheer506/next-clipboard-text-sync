@@ -81,4 +81,6 @@ model Device {
   sharableItems SharableItem[]
 
   user User @relation(fields: [userId], references: [id])
+
+  @@unique([deviceId, userId])
 }
