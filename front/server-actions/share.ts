@@ -4,6 +4,7 @@ import { getAuthenticatedUser } from "@/lib/auth"
 import { USER_ERROR } from "@/services/@common/errorCodes"
 import ServiceError from "@/services/@common/ServiceError"
 import ShareService from "@/services/share/ShareService"
+import UserService from "@/services/user/UserService"
 
 export const uploadText = async (state: unknown, form: FormData) => {
   const text = (form.get("text") || "") as string
@@ -13,10 +14,8 @@ export const uploadText = async (state: unknown, form: FormData) => {
     if (!user) {
       throw new ServiceError(USER_ERROR.NO_AUTHORITY)
     }
-    /* if (!file) {
-      throw new ServiceError()
-    } */
-    const res = await new ShareService().uploadText(user.id, text)
+    const userContext = await new UserService().getContext(user.id)
+    const res = await new ShareService().uploadText(userContext, text)
   } catch (e) {
     /* if (isRedirectError(e)) {
       throw e

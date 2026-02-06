@@ -11,7 +11,7 @@ import { handleService } from "@/services/@common/utils";
 import { REFRESH_TOKEN_EXPIRATION_DAY } from "@/services/auth/const";
 
 class AuthService {
-  async signUp(request: SignUpRequest) {
+  signUp(request: SignUpRequest) {
     return handleService({
       fn: async () => {
         const isExist = await prisma.user.findUnique({ where: { email: request.email } })
@@ -29,7 +29,7 @@ class AuthService {
     })
   }
 
-  async signIn(request: SignInRequest) {
+  signIn(request: SignInRequest) {
     return handleService({
       fn: async () => {
         if (!request.email || !request.password) {
@@ -69,7 +69,7 @@ class AuthService {
     })
   }
 
-  async signOut(refreshToken: string) {
+  signOut(refreshToken: string) {
     return handleService({
       fn: async () => {
         const { count } = await prisma.refreshToken.deleteMany({ where: { token: sha256(refreshToken) } })
