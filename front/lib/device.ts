@@ -19,10 +19,17 @@ const getDeviceFromUA = () => {
   const parser = new UAParser();
   const device = parser.getDevice();
   const browser = parser.getBrowser();
+  const os = parser.getOS();
 
+  if (device.type === "mobile") {
+    return {
+      type: DeviceType.MOBILE,
+      name: `${device.vendor} ${device.model}`
+    }
+  }
   return {
-    type: device.type === "mobile" ? DeviceType.MOBILE : DeviceType.PC,
-    name: ""
+    type: DeviceType.PC,
+    name: `${os.name} ${os.version} ${browser.name}`
   }
 
 }

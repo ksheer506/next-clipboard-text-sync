@@ -3,6 +3,7 @@
 import { useSignInForm } from "@/app/auth/signin/useSignInForm"
 import { Form } from "@/components/Form"
 import FormError from "@/components/Form/FormError"
+import { getUserDeviceInfo } from "@/lib/device"
 import { signInWithCredentials } from "@/server-actions/auth"
 import { Button, Spinner } from "@radix-ui/themes"
 import { useActionState } from "react"
@@ -12,7 +13,7 @@ const SignInActionForm = () => {
   const { register, error } = useSignInForm(actionState ?? null)
 
   return (
-    <form action={action} className="flex flex-col gap-4">
+    <form action={(form) => action({ form, deviceInfo: getUserDeviceInfo() })} className="flex flex-col gap-4">
       <Form.Text
         title="이메일(ID)"
         type="email"

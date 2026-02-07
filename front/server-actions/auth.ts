@@ -7,6 +7,12 @@ import { redirect } from "next/navigation"
 import { ROUTE } from "@/const/route"
 import { isRedirectError, RedirectType } from "next/dist/client/components/redirect-error"
 import { AuthError } from "next-auth"
+import { DeviceInfo } from "@/services/device/types"
+
+interface SignInPayload {
+  form: FormData
+  deviceInfo: DeviceInfo
+}
 
 export const signUp = async (state: unknown, form: FormData) => {
   const data = {
@@ -40,10 +46,12 @@ export const signUp = async (state: unknown, form: FormData) => {
 
 }
 
-export const signInWithCredentials = async (state: unknown, form: FormData) => {
+export const signInWithCredentials = async (state: unknown, payload: SignInPayload) => {
+  const { form, deviceInfo } = payload
   const data = {
     email: form.get("email") || "",
     password: form.get("password") || "",
+    deviceInfo: JSON.stringify(deviceInfo),
   }
 
   try {

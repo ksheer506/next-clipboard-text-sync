@@ -21,9 +21,7 @@ const MenuLink = ({ to, Icon, title }: MenuLinkProps) => {
       href={to}
       className={clsx(
         "flex items-center justify-start gap-3 p-2 w-full h-10 rounded-md hover:bg-sidebar-accent-muted transition-colors",
-        {
-          "bg-sidebar-accent": isActive
-        }
+        { "bg-sidebar-accent": isActive }
       )}
     >
       <Icon className={`shrink-0 grow-0 w-[19px] h-[19px] ${isActive ? "text-primary" : "text-muted-foreground"}`} />

@@ -24,20 +24,21 @@ class DeviceService {
   registerOrTouch(userId: number, deviceInfo: DeviceInfo) {
     return handleService({
       fn: async () => {
+        const { id, ...rest } = deviceInfo
         const device = await prisma.device.findUnique({
-          where: { deviceId_userId: { deviceId: deviceInfo.id, userId } }
+          where: { deviceId_userId: { deviceId: id, userId } }
         })
-        const commonData = { ...deviceInfo, lastSeenAt: new Date() }
+        const commonData = { ...rest, lastSeenAt: new Date() }
 
         if (device) {
           await prisma.device.updateMany({
-            where: { deviceId: deviceInfo.id, userId },
+            where: { deviceId: id, userId },
             data: commonData
           })
           return device
         }
         return await prisma.device.create({
-          data: { ...commonData, deviceId: deviceInfo.id, userId, createdAt: new Date() }
+          data: { ...commonData, deviceId: id, userId, createdAt: new Date() }
         })
       }
     })

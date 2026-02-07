@@ -2,7 +2,6 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
 import AuthService from "@/services/auth/AuthService";
 import ServiceError from "@/services/@common/ServiceError";
-import { getUserDeviceInfo } from "@/lib/device";
 import DeviceService from "@/services/device/DeviceService";
 
 export const {
@@ -20,14 +19,16 @@ export const {
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        deviceInfo: { type: "text" }
       },
       authorize: async (credentials) => {
         try {
+          const deviceInfo = JSON.parse(credentials.deviceInfo as string)
           const res = await new AuthService().signIn({
             email: credentials.email as string,
             password: credentials.password as string,
           })
-          const device = await new DeviceService().registerOrTouch(res.user.userId, getUserDeviceInfo())
+          const device = await new DeviceService().registerOrTouch(res.user.userId, deviceInfo)
 
           return { ...res.user, userId: res.user.userId, accessToken: res.accessToken, refreshToken: res.refreshToken }
         }
