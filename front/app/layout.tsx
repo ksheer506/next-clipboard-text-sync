@@ -3,9 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { Theme } from "@radix-ui/themes";
 import MainDrawer from "@/components/MainDrawer/MainDrawer";
+import { getSession } from "@/server-actions/auth";
+import { Toaster } from "sonner";
 
 import "./globals.css";
-import { getSession } from "@/server-actions/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default async function RootLayout({
             <main className="w-screen h-screen geometric-bg">
               {children}
             </main>
+            <Toaster richColors />
           </Theme>
         </SessionProvider>
       </body>

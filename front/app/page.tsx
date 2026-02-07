@@ -1,24 +1,25 @@
-import SignOutButton from "@/app/SignOutButton";
+import ShareItemForm from "@/app/_home/ShareItemForm";
+import Card from "@/components/Card";
 import Landing from "@/components/Landing";
-import { ROUTE } from "@/const/route";
 import { getSession } from "@/server-actions/auth";
-import Link from "next/link";
 
-export default async function Home() {
+export default async function App() {
   const session = await getSession();
 
   if (!session) {
     return <Landing />;
   }
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Link href={ROUTE.AUTH.SIGN_IN}>Login</Link>
-      </main>
-      <SignOutButton />
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        footer
-      </footer>
+    <div className="items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+      <div className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        <header className="w-full flex flex-col items-center gap-2">
+          <h1 className="text-4xl font-bold">공유하기</h1>
+          <p className="text-lg">텍스트나 파일을 안전하게 저장하고 공유하세요.</p>
+        </header>
+        <Card>
+          <ShareItemForm />
+        </Card>
+      </div>
     </div>
   );
 }
