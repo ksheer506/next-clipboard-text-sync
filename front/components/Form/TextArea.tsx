@@ -11,7 +11,7 @@ const TextArea = ({ title, error, id, ...props }: TextAreaProps) => {
     <div className="flex flex-col gap-1">
       <label htmlFor={id} className="font-bold">{title}</label>
       <RadixTextArea
-        className="w-full"
+        className="w-full h-33.5"
         id={id}
         {...props}
       />

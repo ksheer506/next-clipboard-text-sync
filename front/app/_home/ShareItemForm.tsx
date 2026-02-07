@@ -1,5 +1,6 @@
 "use client"
 
+import FileShareForm from "@/app/_home/FileShareForm"
 import TextShareForm from "@/app/_home/TextShareForm"
 import * as Tabs from "@radix-ui/react-tabs"
 import { FileText, Upload } from "lucide-react"
@@ -28,7 +29,7 @@ const ShareItemForm = () => {
           <TextShareForm />
         </Tabs.Content>
         <Tabs.Content value={SHARE_ITEM_TABS.file}>
-          <p>Access and update your documents.</p>
+          <FileShareForm />
         </Tabs.Content>
       </div>
     </Tabs.Root>
