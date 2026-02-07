@@ -35,12 +35,12 @@ const MainDrawer = () => {
           </div>
           <div className="flex flex-col gap-2">
             <MenuLink
-              to={ROUTE.ITEMS.SHARE}
+              to={ROUTE.MAIN}
               Icon={UploadIcon}
               title="공유하기"
             />
             <MenuLink
-              to={ROUTE.ITEMS.HISTORY}
+              to={ROUTE.HISTORY}
               Icon={HistoryIcon}
               title="공유 기록"
             />
