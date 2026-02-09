@@ -1,7 +1,19 @@
 import ShareItem from "@/components/ShareItem/ShareItem"
+import { ROUTE } from "@/const/route";
 import { ShareItemType } from "@/generated/prisma/enums"
+import { getSession } from "@/server-actions/auth";
+import ShareService from "@/services/share/ShareService";
+import { redirect, RedirectType } from "next/navigation";
 
-const History = () => {
+const History = async () => {
+  const session = await getSession();
+  const userId = session?.user?.id;
+
+  if (!session || !userId) {
+    redirect(ROUTE.AUTH.SIGN_IN, RedirectType.replace);
+  }
+  const history = await new ShareService().getHistory(Number(userId));
+
   return (
     <div className="items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <div className="w-full flex flex-col">
@@ -10,7 +22,9 @@ const History = () => {
           <p className="text-lg">내가 공유한 텍스트와 파일을 확인하세요.</p>
         </header>
         <div>
-          <ShareItem {...DUMMY_SHARE_ITEM} />
+          {history.map((item) => (
+            <ShareItem key={item.id} {...item} />
+          ))}
         </div>
       </div>
     </div>

@@ -13,8 +13,8 @@ interface TextItemProps {
 interface ShareItemProps {
   type: ShareItemType
   title?: string
-  content?: string
-  fileUrl?: string
+  content: string | null
+  fileUrl: string | null
   createdAt: Date
   expiresAt: Date
 }
@@ -30,7 +30,7 @@ const ShareItem = ({ type, title, content, fileUrl, createdAt }: ShareItemProps)
         {!!title && <h3 className="text-lg font-bold">{title}</h3>}
         <p className="text-xs text-muted-foreground ml-auto">{formatDate(createdAt)}</p>
       </div>
-      {type === ShareItemType.TEXT ? <TextItemBody content={content} /> : <></>}
+      {type === ShareItemType.TEXT ? <TextItemBody content={content ?? ""} /> : <></>}
     </Card>
   )
 }
@@ -55,6 +55,7 @@ const TextItemBody = ({ content }: TextItemProps) => {
         {isCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
       </Button>
     </div>
-  ) }
+  )
+}
 
 export default ShareItem
