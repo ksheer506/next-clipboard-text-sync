@@ -1,7 +1,7 @@
 import { createServiceError } from "@/services/@common/utils";
 
 export const INTERNAL_ERROR = {
-  UNKNOWN: createServiceError("INTERNAL", 1, "알 수 없는 오류가 발생했습니다. 다시 시도해주세요."),
+  UNKNOWN: createServiceError("INTERNAL", 1, "일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요."),
 }
 
 export const USER_ERROR = {

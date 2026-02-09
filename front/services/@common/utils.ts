@@ -1,13 +1,12 @@
 import { INTERNAL_ERROR } from "@/services/@common/errorCodes"
 import ServiceError from "@/services/@common/ServiceError"
-import { ServiceHandlerOptions } from "@/services/@common/types"
 
 export const createServiceError = (domain: string, code: number, message: string) => ({
   code: `ERROR: ${domain.toUpperCase()}_${code.toString().padStart(4, "0")}`,
   message: message,
 })
 
-export const handleService = async <T>({ fn, unknownErrorMessage }: ServiceHandlerOptions<T>) => {
+export const withServiceError = async <D>(fn: () => Promise<D>) => {
   try {
     return await fn()
   } catch (e) {
@@ -15,9 +14,6 @@ export const handleService = async <T>({ fn, unknownErrorMessage }: ServiceHandl
       throw e
     }
     console.error(e)
-    throw new ServiceError({
-      ...INTERNAL_ERROR.UNKNOWN,
-      message: unknownErrorMessage || INTERNAL_ERROR.UNKNOWN.message
-    })
+    throw new ServiceError(INTERNAL_ERROR.UNKNOWN)
   }
 }

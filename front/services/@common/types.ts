@@ -3,8 +3,3 @@ export interface Logger {
   warn: (...message: unknown[]) => void
   error: (...message: unknown[]) => void
 }
-
-export interface ServiceHandlerOptions<D> {
-  fn: () => Promise<D>
-  unknownErrorMessage?: string
-}

@@ -1,46 +1,41 @@
 import { prisma } from "@/lib/prisma"
 import { DEVICE_ERROR } from "@/services/@common/errorCodes"
 import ServiceError from "@/services/@common/ServiceError"
-import { handleService } from "@/services/@common/utils"
+import { withServiceError } from "@/services/@common/utils"
 import { DeviceInfo } from "@/services/device/types"
 
 class DeviceService {
   getContext(userId: number, deviceId: string) {
-    return handleService({
-      fn: async () => {
-        const device = await prisma.device.findUnique({
-          where: { deviceId_userId: { deviceId, userId } }
-        })
+    return withServiceError(async () => {
+      const device = await prisma.device.findUnique({
+        where: { deviceId_userId: { deviceId, userId } }
+      })
 
-        if (!device) {
-          throw new ServiceError(DEVICE_ERROR.DEVICE_NOT_FOUND)
-        }
-        return device
-      },
-      unknownErrorMessage: "등록된 디바이스를 찾을 수 없습니다."
+      if (!device) {
+        throw new ServiceError(DEVICE_ERROR.DEVICE_NOT_FOUND)
+      }
+      return device
     })
   }
 
   registerOrTouch(userId: number, deviceInfo: DeviceInfo) {
-    return handleService({
-      fn: async () => {
-        const { id, ...rest } = deviceInfo
-        const device = await prisma.device.findUnique({
-          where: { deviceId_userId: { deviceId: id, userId } }
-        })
-        const commonData = { ...rest, lastSeenAt: new Date() }
+    return withServiceError(async () => {
+      const { id, ...rest } = deviceInfo
+      const device = await prisma.device.findUnique({
+        where: { deviceId_userId: { deviceId: id, userId } }
+      })
+      const commonData = { ...rest, lastSeenAt: new Date() }
 
-        if (device) {
-          await prisma.device.updateMany({
-            where: { deviceId: id, userId },
-            data: commonData
-          })
-          return device
-        }
-        return await prisma.device.create({
-          data: { ...commonData, deviceId: id, userId, createdAt: new Date() }
+      if (device) {
+        await prisma.device.updateMany({
+          where: { deviceId: id, userId },
+          data: commonData
         })
+        return device
       }
+      return await prisma.device.create({
+        data: { ...commonData, deviceId: id, userId, createdAt: new Date() }
+      })
     })
   }
 }
