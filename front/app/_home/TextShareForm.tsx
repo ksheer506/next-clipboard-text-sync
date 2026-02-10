@@ -1,5 +1,4 @@
 "use client"
-
 import { useTextShareForm } from "@/app/_home/hooks/useTextShareForm"
 import { Form } from "@/components/Form"
 import { getDeviceId } from "@/lib/device"

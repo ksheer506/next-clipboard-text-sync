@@ -3,10 +3,11 @@ import { CloudUpload } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 
 interface DropZoneProps {
+  name: string
   onChange: (files: File[]) => void
 }
 
-const DropZone = ({ onChange }: DropZoneProps) => {
+const DropZone = ({ name, onChange }: DropZoneProps) => {
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({
     noDragEventsBubbling: true,
     preventDropOnDocument: true,
@@ -31,7 +32,7 @@ const DropZone = ({ onChange }: DropZoneProps) => {
           </p>
         )}
       </label>
-      <input id="select-file" {...getInputProps()} />
+      <input id="select-file" name={name} {...getInputProps()} />
     </div>
 
   )

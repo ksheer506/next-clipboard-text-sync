@@ -10,6 +10,10 @@ interface TextItemProps {
   content: string
 }
 
+interface FileItemProps {
+  fileUrl: string
+}
+
 interface ShareItemProps {
   type: ShareItemType
   title?: string
@@ -30,7 +34,7 @@ const ShareItem = ({ type, title, content, fileUrl, createdAt }: ShareItemProps)
         {!!title && <h3 className="text-lg font-bold">{title}</h3>}
         <p className="text-xs text-muted-foreground ml-auto">{formatDate(createdAt)}</p>
       </div>
-      {type === ShareItemType.TEXT ? <TextItemBody content={content ?? ""} /> : <></>}
+      {type === ShareItemType.TEXT ? <TextItemBody content={content ?? ""} /> : <FileItemBody fileUrl={fileUrl ?? ""} />}
     </Card>
   )
 }
@@ -54,6 +58,18 @@ const TextItemBody = ({ content }: TextItemProps) => {
       <Button size="1" color="gray" variant="soft" radius="large" className="cursor-pointer!" onClick={handleCopy}>
         {isCopied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
       </Button>
+    </div>
+  )
+}
+
+const FileItemBody = ({ fileUrl }: FileItemProps) => {
+  const handleDownload = () => {
+    window.open(`${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}${fileUrl}`, "_blank")
+  }
+
+  return (
+    <div className="flex gap-2 bg-muted/50 rounded-lg p-4">
+      <p className="mr-auto break-all whitespace-pre-wrap">{fileUrl}</p>
     </div>
   )
 }
