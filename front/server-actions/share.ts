@@ -39,7 +39,7 @@ export const uploadText = async (state: unknown, payload: UploadTextPayload) => 
       throw e
     } */
     if (ServiceError.isError(e)) {
-      return { ok: false, message: e.message }
+      return { ok: false, code: e.code, message: e.message }
     }
     return { ok: false, message: "텍스트 공유에 실패하였습니다. 다시 시도해주세요." }
   }
@@ -64,7 +64,7 @@ export const uploadFile = async (state: unknown, payload: UploadFilePayload) => 
     return { ok: true, message: "파일 공유에 성공하였습니다." }
   } catch (e) {
     if (ServiceError.isError(e)) {
-      return { ok: false, message: e.message }
+      return { ok: false, code: e.code, message: e.message }
     }
     return { ok: false, message: "파일 공유에 실패하였습니다. 다시 시도해주세요." }
   }

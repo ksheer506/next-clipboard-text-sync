@@ -15,6 +15,10 @@ export const getDeviceId = () => {
   return deviceId
 }
 
+export const clearDeviceId = () => {
+  localStorage.removeItem(DEVICE_ID_KEY);
+}
+
 const getDeviceFromUA = () => {
   const parser = new UAParser();
   const device = parser.getDevice();

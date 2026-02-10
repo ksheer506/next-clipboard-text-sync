@@ -75,6 +75,7 @@ model Device {
   deviceId      String /* 클라이언트 식별용 id */
   userId        Int
   name          String?
+  isBlocked     Boolean        @default(false)
   lastSeenAt    DateTime
   createdAt     DateTime       @default(now())
   type          DeviceType

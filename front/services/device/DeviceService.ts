@@ -18,6 +18,14 @@ class DeviceService {
     })
   }
 
+  getAllDevices(userId: number) {
+    return withServiceError(async () => {
+      return await prisma.device.findMany({
+        where: { userId, isBlocked: false }
+      })
+    })
+  }
+
   registerOrTouch(userId: number, deviceInfo: DeviceInfo) {
     return withServiceError(async () => {
       const { id, ...rest } = deviceInfo
@@ -38,6 +46,9 @@ class DeviceService {
       })
     })
   }
+
+  /** TODO:ksh: 디바이스 차단 - 2026.02.10 */
+  block(userId: number, deviceId: string) {}
 }
 
 export default DeviceService

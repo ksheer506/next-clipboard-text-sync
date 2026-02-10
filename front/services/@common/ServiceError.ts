@@ -1,8 +1,13 @@
+interface ServiceErrorPayload {
+  code: string
+  message: string
+}
+
 class ServiceError extends Error {
   code: string
   message: string
 
-  constructor({ code, message }: { code: string, message: string }) {
+  constructor({ code, message }: ServiceErrorPayload) {
     super(message)
     this.code = code
     this.message = message
@@ -13,6 +18,10 @@ class ServiceError extends Error {
       return true
     }
     return typeof err === "object" && !!err && "code" in err && "message" in err
+  }
+
+  static codeOf(code: string | undefined, error: ServiceErrorPayload) {
+    return error.code === code
   }
 }
 

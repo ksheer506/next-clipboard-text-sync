@@ -22,5 +22,6 @@ export const USER_ERROR = {
 } as const;
 
 export const DEVICE_ERROR = {
-  DEVICE_NOT_FOUND: createServiceError("DEVICE", 1, "등록되지 않는 디바이스입니다."),
-}
+  DEVICE_NOT_FOUND: createServiceError("DEVICE", 1, "등록되지 않는 기기입니다."),
+  DEVICE_BLOCKED: createServiceError("DEVICE", 2, "차단된 기기입니다. 로그인 후 다시 시도해주세요."),
+} as const;

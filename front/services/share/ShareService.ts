@@ -1,6 +1,7 @@
+import { Device } from "@/generated/prisma/client";
 import { ShareAuthority, ShareItemType } from "@/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
-import { USER_ERROR } from "@/services/@common/errorCodes";
+import { DEVICE_ERROR, USER_ERROR } from "@/services/@common/errorCodes";
 import ServiceError from "@/services/@common/ServiceError";
 import { withServiceError } from "@/services/@common/utils";
 import { FILE_EXPIRE_TIME_MS, TEXT_EXPIRE_TIME_MS } from "@/services/share/const";
@@ -10,14 +11,21 @@ import { getExpireDate } from "@/services/share/utils";
 import { v4 as uuidv4 } from "uuid";
 
 class ShareService {
+  #ensureDeviceNotBlocked(device: Device) {
+    if (device.isBlocked) {
+      throw new ServiceError(DEVICE_ERROR.DEVICE_BLOCKED)
+    }
+  }
+
   uploadText(request: UploadTextRequest) {
     return withServiceError(async () => {
-      const { text, userContext, deviceContext: deviceConText } = request
+      const { text, userContext, deviceContext } = request
 
+      this.#ensureDeviceNotBlocked(deviceContext)
       return await prisma.sharableItem.create({
         data: {
           userId: userContext.id,
-          deviceId: deviceConText.id,
+          deviceId: deviceContext.id,
           type: ShareItemType.TEXT,
           content: text,
           expiresAt: getExpireDate(TEXT_EXPIRE_TIME_MS),
@@ -31,6 +39,7 @@ class ShareService {
     return withServiceError(async () => {
       const { file, userContext, deviceContext } = request
 
+      this.#ensureDeviceNotBlocked(deviceContext)
       if (userContext.authority === ShareAuthority.TEXT_ONLY) {
         throw new ServiceError(USER_ERROR.NO_FILE_AUTHORITY)
       }
