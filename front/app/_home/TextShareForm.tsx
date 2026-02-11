@@ -20,10 +20,12 @@ const TextShareForm = () => {
       reset()
     },
     onError: async (e) => {
-      toast.error(e.message)
       if (ServiceError.codeOf(DEVICE_ERROR.DEVICE_BLOCKED, e.code)) {
         clearDeviceId()
         await signOutWithForm(session?.user?.refreshToken)
+        toast.error("보안 정책에 의해 로그아웃되었습니다.")
+      } else {
+        toast.error(e.message)
       }
     },
   })
