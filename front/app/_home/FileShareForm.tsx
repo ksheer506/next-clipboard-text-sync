@@ -2,27 +2,33 @@
 import { useFileShareForm } from "@/app/_home/hooks/useFileShareForm"
 import DropZone from "@/components/DropZone"
 import { Form } from "@/components/Form"
-import { getDeviceId } from "@/lib/device"
+import { useActionOnClient } from "@/hooks/useActionOnClient"
+import { clearDeviceId, getDeviceId } from "@/lib/device"
+import { signOutWithForm } from "@/server-actions/auth"
 import { uploadFile } from "@/server-actions/share"
+import { DEVICE_ERROR } from "@/services/@common/errorCodes"
+import ServiceError from "@/services/@common/ServiceError"
 import { Button, Spinner } from "@radix-ui/themes"
-import { useActionState, useEffect } from "react"
+import { useSession } from "next-auth/react"
 import { toast } from "sonner"
 
 const FileShareForm = () => {
-  const [actionState, action, isPending] = useActionState(uploadFile, INITIAL_ACTION_STATE)
-  const { register, reset, form } = useFileShareForm(actionState)
-
-  useEffect(() => {
-    if (!actionState) return
-    const { ok, message } = actionState
-
-    if (ok) {
+  const { data: session } = useSession()
+  const { action, getActionState, isPending } = useActionOnClient({
+    action: uploadFile,
+    onSuccess: () => {
       toast.success("파일 공유에 성공하였습니다.")
       reset()
-    } else if (!ok && message) {
-      toast.error(message)
+    },
+    onError: async (e) => {
+      toast.error(e.message)
+      if (ServiceError.codeOf(DEVICE_ERROR.DEVICE_BLOCKED, e.code)) {
+        clearDeviceId()
+        await signOutWithForm(session?.user?.refreshToken)
+      }
     }
-  }, [actionState])
+  })
+  const { register, reset, form } = useFileShareForm(getActionState())
 
   return (
     <form action={(form) => action({ form, deviceId: getDeviceId() })} className="flex flex-col gap-4">
@@ -46,7 +52,5 @@ const FileShareForm = () => {
     </form>
   )
 }
-
-const INITIAL_ACTION_STATE = { ok: false, message: "" }
 
 export default FileShareForm

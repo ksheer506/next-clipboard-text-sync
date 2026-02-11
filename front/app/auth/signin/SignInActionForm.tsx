@@ -1,16 +1,15 @@
 "use client"
-
 import { useSignInForm } from "@/app/auth/signin/useSignInForm"
 import { Form } from "@/components/Form"
 import FormError from "@/components/Form/FormError"
+import { useActionOnClient } from "@/hooks/useActionOnClient"
 import { getUserDeviceInfo } from "@/lib/device"
 import { signInWithCredentials } from "@/server-actions/auth"
 import { Button, Spinner } from "@radix-ui/themes"
-import { useActionState } from "react"
 
 const SignInActionForm = () => {
-  const [actionState, action, isPending] = useActionState(signInWithCredentials, INITIAL_ACTION_STATE)
-  const { register, error } = useSignInForm(actionState ?? null)
+  const { action, getActionState, isPending } = useActionOnClient(signInWithCredentials)
+  const { register, error } = useSignInForm(getActionState())
 
   return (
     <form action={(form) => action({ form, deviceInfo: getUserDeviceInfo() })} className="flex flex-col gap-4">
@@ -43,7 +42,5 @@ const SignInActionForm = () => {
     </form>
   )
 }
-
-const INITIAL_ACTION_STATE = { ok: false, message: "" }
 
 export default SignInActionForm

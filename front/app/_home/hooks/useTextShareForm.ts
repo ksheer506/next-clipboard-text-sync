@@ -1,8 +1,8 @@
-import { FormActionError } from "@/@types/common";
+import { ErrorState } from "@/hooks/useActionOnClient";
 import { ChangeEvent, useEffect, useState } from "react";
 
-export const useTextShareForm = (actionError: FormActionError | null = null) => {
-  const [error, setError] = useState<FormActionError>(actionError ?? INITIAL_ERROR)
+export const useTextShareForm = (actionError: ErrorState | null = null) => {
+  const [error, setError] = useState<ErrorState>(actionError ?? INITIAL_ERROR)
   const [form, setForm] = useState({ title: "", content: "" });
 
   const handleChangeValue = (field: keyof typeof form) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

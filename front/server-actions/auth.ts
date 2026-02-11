@@ -14,7 +14,7 @@ interface SignInPayload {
   deviceInfo: DeviceInfo
 }
 
-export const signUp = async (state: unknown, form: FormData) => {
+export const signUp = async (form: FormData) => {
   const data = {
     email: form.get("email") || "",
     name: form.get("name") || "",
@@ -46,7 +46,7 @@ export const signUp = async (state: unknown, form: FormData) => {
 
 }
 
-export const signInWithCredentials = async (state: unknown, payload: SignInPayload) => {
+export const signInWithCredentials = async (payload: SignInPayload) => {
   const { form, deviceInfo } = payload
   const data = {
     email: form.get("email") || "",
@@ -65,6 +65,7 @@ export const signInWithCredentials = async (state: unknown, payload: SignInPaylo
       }
     }
     await signIn("credentials", { ...data, redirectTo: "/" })
+    return { ok: true }
   } catch (e) {
     if (isRedirectError(e)) {
       throw e

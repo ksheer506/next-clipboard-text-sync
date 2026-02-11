@@ -1,15 +1,14 @@
 "use client"
-
 import { useSignUpForm } from "@/app/auth/signup/useSignUpForm"
 import { Form } from "@/components/Form"
 import FormError from "@/components/Form/FormError"
+import { useActionOnClient } from "@/hooks/useActionOnClient"
 import { signUp } from "@/server-actions/auth"
 import { Button, Spinner } from "@radix-ui/themes"
-import { useActionState } from "react"
 
 const SignUpActionForm = () => {
-  const [actionState, action, isPending] = useActionState(signUp, INITIAL_ACTION_STATE)
-  const { register, error } = useSignUpForm(actionState)
+  const { action, getActionState, isPending } = useActionOnClient(signUp)
+  const { register, error } = useSignUpForm(getActionState())
 
   const { field, message } = error
 
@@ -66,7 +65,5 @@ const SignUpActionForm = () => {
     </form>
   )
 }
-
-const INITIAL_ACTION_STATE = { ok: false, message: "" }
 
 export default SignUpActionForm

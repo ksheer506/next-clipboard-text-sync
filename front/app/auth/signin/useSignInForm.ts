@@ -1,8 +1,8 @@
-import { FormActionError } from "@/@types/common"
+import { ErrorState } from "@/hooks/useActionOnClient"
 import { ChangeEvent, useEffect, useState } from "react"
 
-export const useSignInForm = (actionError: FormActionError | null) => {
-  const [error, setError] = useState<FormActionError>(actionError ?? INITIAL_ERROR)
+export const useSignInForm = (actionError: ErrorState | null) => {
+  const [error, setError] = useState<ErrorState>(actionError ?? INITIAL_ERROR)
   const [form, setForm] = useState({
     email: "",
     password: "",

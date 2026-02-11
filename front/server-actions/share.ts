@@ -17,7 +17,7 @@ interface UploadFilePayload {
   deviceId: string
 }
 
-export const uploadText = async (state: unknown, payload: UploadTextPayload) => {
+export const uploadText = async (payload: UploadTextPayload) => {
   const { form, deviceId } = payload
   const text = (form.get("content") || "") as string
   const user = await getAuthenticatedUser()
@@ -45,7 +45,7 @@ export const uploadText = async (state: unknown, payload: UploadTextPayload) => 
   }
 }
 
-export const uploadFile = async (state: unknown, payload: UploadFilePayload) => {
+export const uploadFile = async (payload: UploadFilePayload) => {
   const { form, deviceId } = payload
   const file = form.get("file") as File | null
   const user = await getAuthenticatedUser()

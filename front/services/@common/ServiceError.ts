@@ -20,7 +20,7 @@ class ServiceError extends Error {
     return typeof err === "object" && !!err && "code" in err && "message" in err
   }
 
-  static codeOf(code: string | undefined, error: ServiceErrorPayload) {
+  static codeOf(error: ServiceErrorPayload, code: string | undefined) {
     return error.code === code
   }
 }
